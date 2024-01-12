@@ -1,4 +1,4 @@
-import 'package:amap_map/amap_map.dart';
+import 'package:amap_map_lite/amap_map.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 

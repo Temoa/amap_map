@@ -9,7 +9,7 @@
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 
-import 'package:amap_map/amap_map.dart';
+import 'package:amap_map_lite/amap_map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:x_amap_base/x_amap_base.dart';

@@ -5,6 +5,7 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MarkerOptions;
 
 /**
+ * @author kuloud
  * @author whm
  * @date 2020/11/6 6:17 PM
  * @mail hongming.whm@alibaba-inc.com
@@ -21,10 +22,6 @@ class MarkerOptionsBuilder implements MarkerOptionsSink {
         return markerOptions;
     }
 
-    @Override
-    public void setAlpha(float alpha) {
-        markerOptions.alpha(alpha);
-    }
 
     @Override
     public void setAnchor(float u, float v) {
@@ -37,10 +34,6 @@ class MarkerOptionsBuilder implements MarkerOptionsSink {
         markerOptions.draggable(draggable);
     }
 
-    @Override
-    public void setFlat(boolean flat) {
-        markerOptions.setFlat(flat);
-    }
 
     @Override
     public void setIcon(BitmapDescriptor bitmapDescriptor) {

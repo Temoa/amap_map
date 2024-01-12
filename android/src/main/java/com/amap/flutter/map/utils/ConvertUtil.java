@@ -20,7 +20,6 @@ import com.amap.api.maps.model.CustomMapStyleOptions;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.MyLocationStyle;
-import com.amap.api.maps.model.Poi;
 import com.amap.flutter.map.core.AMapOptionsSink;
 
 import java.lang.reflect.Method;
@@ -98,7 +97,7 @@ public class ConvertUtil {
     }
 
     public static int toLocalMapType(int dartMapIndex) {
-        int[] localTypeArray = {AMap.MAP_TYPE_NORMAL, AMap.MAP_TYPE_SATELLITE, AMap.MAP_TYPE_NIGHT, AMap.MAP_TYPE_NAVI, AMap.MAP_TYPE_BUS};
+        int[] localTypeArray = {AMap.MAP_TYPE_NORMAL, AMap.MAP_TYPE_SATELLITE, AMap.MAP_TYPE_NIGHT};
         if (dartMapIndex > localTypeArray.length) {
             return localTypeArray[0];
         }
@@ -117,10 +116,6 @@ public class ConvertUtil {
                         toLatLngBounds(data.get(1)), toPixels(data.get(2)));
             case "newLatLngZoom":
                 return CameraUpdateFactory.newLatLngZoom(toLatLng(data.get(1)), toFloat(data.get(2)));
-            case "scrollBy":
-                return CameraUpdateFactory.scrollBy( //
-                        toFloatPixels(data.get(1)), //
-                        toFloatPixels(data.get(2)));
             case "zoomBy":
                 if (data.size() == 2) {
                     return CameraUpdateFactory.zoomBy(toFloat(data.get(1)));
@@ -204,27 +199,12 @@ public class ConvertUtil {
                 sink.setBuildingsEnabled(toBoolean(buildingsEnabled));
             }
 
-            final Object customMapStyleOptions = data.get("customStyleOptions");
-            if (null != customMapStyleOptions) {
-                CustomMapStyleOptions customMapStyleOptions1 = toCustomMapStyleOptions(customMapStyleOptions);
-                sink.setCustomMapStyleOptions(customMapStyleOptions1);
-            }
 
             final Object myLocationStyleData = data.get("myLocationStyle");
             if (null != myLocationStyleData) {
                 sink.setMyLocationStyle(ConvertUtil.toMyLocationStyle(myLocationStyleData, density));
             }
 
-            final Object screenAnchor = data.get("screenAnchor");
-            if (null != screenAnchor) {
-                final List<?> anchorData = toList(screenAnchor);
-                sink.setScreenAnchor(toFloat(anchorData.get(0)), toFloat(anchorData.get(1)));
-            }
-
-            final Object compassEnabled = data.get("compassEnabled");
-            if (null != compassEnabled) {
-                sink.setCompassEnabled(toBoolean(compassEnabled));
-            }
 
             final Object labelsEnabled = data.get("labelsEnabled");
             if (null != labelsEnabled) {
@@ -244,15 +224,6 @@ public class ConvertUtil {
                 sink.setMaxZoomLevel(toFloatWrapperWithDefault(targetData.get(1), 20));
             }
 
-            final Object scaleEnabled = data.get("scaleEnabled");
-            if (null != scaleEnabled) {
-                sink.setScaleEnabled(toBoolean(scaleEnabled));
-            }
-
-            final Object touchPoiEnabled = data.get("touchPoiEnabled");
-            if (null != touchPoiEnabled) {
-                sink.setTouchPoiEnabled(toBoolean(touchPoiEnabled));
-            }
 
             final Object trafficEnabled = data.get("trafficEnabled");
             if (null != trafficEnabled) {
@@ -291,14 +262,6 @@ public class ConvertUtil {
             customMapStyleOptions.setEnable(toBoolean(enableData));
         }
 
-        final Object styleData = map.get("styleData");
-        if (null != styleData) {
-            customMapStyleOptions.setStyleData((byte[]) styleData);
-        }
-        final Object styleExtraData = map.get("styleExtraData");
-        if (null != styleExtraData) {
-            customMapStyleOptions.setStyleExtraData((byte[]) styleExtraData);
-        }
         return customMapStyleOptions;
     }
 
@@ -427,17 +390,6 @@ public class ConvertUtil {
         } else {
             return bitmap;
         }
-    }
-
-    public static Object poiToMap(Poi poi) {
-        if (null == poi) {
-            return null;
-        }
-        final Map<String, Object> data = new HashMap<>();
-        data.put("id", poi.getPoiId());
-        data.put("name", poi.getName());
-        data.put("latLng", latLngToList(poi.getCoordinate()));
-        return data;
     }
 
     public static Object latLngToList(LatLng latLng) {

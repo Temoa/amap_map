@@ -10,12 +10,12 @@
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 
-// import 'package:amap_map_extensions/amap_map_extensions.dart';
+// import 'package:amap_map_lite_extensions/amap_map_extensions.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:typed_data';
 
-import 'package:amap_map/amap_map.dart';
+import 'package:amap_map_lite/amap_map.dart';
 
 class MapWithExtensionPage extends StatefulWidget {
   @override

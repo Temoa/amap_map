@@ -40,11 +40,6 @@ class PolygonUtil {
             sink.setVisible(ConvertUtil.toBoolean(visible));
         }
 
-        final Object joinType = data.get("joinType");
-        if (joinType != null) {
-            sink.setLineJoinType(AMapPara.LineJoinType.valueOf(ConvertUtil.toInt(joinType)));
-        }
-
         final String polylineId = (String) data.get("id");
         if (polylineId == null) {
             throw new IllegalArgumentException("polylineId was null");

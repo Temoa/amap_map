@@ -6,6 +6,7 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 
 /**
+ * @author kuloud
  * @author whm
  * @date 2020/11/10 9:47 PM
  * @mail hongming.whm@alibaba-inc.com

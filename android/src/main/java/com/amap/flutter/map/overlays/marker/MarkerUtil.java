@@ -19,10 +19,6 @@ public class MarkerUtil {
             return null;
         }
         final Map<?, ?> data = ConvertUtil.toMap(o);
-        final Object alpha = data.get("alpha");
-        if (alpha != null) {
-            sink.setAlpha(ConvertUtil.toFloat(alpha));
-        }
         final Object anchor = data.get("anchor");
         if (anchor != null) {
             final List<?> anchorData = ConvertUtil.toList(anchor);
@@ -32,10 +28,6 @@ public class MarkerUtil {
         final Object draggable = data.get("draggable");
         if (draggable != null) {
             sink.setDraggable(ConvertUtil.toBoolean(draggable));
-        }
-        final Object flat = data.get("flat");
-        if (flat != null) {
-            sink.setFlat(ConvertUtil.toBoolean(flat));
         }
         final Object icon = data.get("icon");
         if (icon != null) {

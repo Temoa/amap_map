@@ -8,6 +8,7 @@ import com.amap.api.maps.model.PolylineOptions;
 import java.util.List;
 
 /**
+ * @author kuloud
  * @author whm
  * @date 2020/11/10 2:58 PM
  * @mail hongming.whm@alibaba-inc.com
@@ -53,16 +54,6 @@ class PolylineController implements PolylineOptionsSink {
     }
 
     @Override
-    public void setCustomTexture(BitmapDescriptor customTexture) {
-        polyline.setCustomTexture(customTexture);
-    }
-
-    @Override
-    public void setCustomTextureList(List<BitmapDescriptor> customTextureList) {
-        polyline.setCustomTextureList(customTextureList);
-    }
-
-    @Override
     public void setColorList(List<Integer> colorList) {
         PolylineOptions options = polyline.getOptions();
         options.colorValues(colorList);
@@ -70,12 +61,6 @@ class PolylineController implements PolylineOptionsSink {
 
     }
 
-    @Override
-    public void setCustomIndexList(List<Integer> customIndexList) {
-        PolylineOptions options = polyline.getOptions();
-        options.setCustomTextureIndex(customIndexList);
-        polyline.setOptions(options);
-    }
 
     @Override
     public void setGeodesic(boolean geodesic) {

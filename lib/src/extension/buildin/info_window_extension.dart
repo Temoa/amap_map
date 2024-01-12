@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:amap_map/amap_map.dart';
+import 'package:amap_map_lite/amap_map.dart';
 import 'package:flutter/widgets.dart';
 import 'package:x_amap_base/x_amap_base.dart';
 

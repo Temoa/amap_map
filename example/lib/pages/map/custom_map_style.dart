@@ -1,4 +1,4 @@
-import 'package:amap_map/amap_map.dart';
+import 'package:amap_map_lite/amap_map.dart';
 import 'package:amap_map_example/widgets/amap_switch_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

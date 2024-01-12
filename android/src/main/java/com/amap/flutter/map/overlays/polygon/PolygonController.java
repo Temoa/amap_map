@@ -55,8 +55,4 @@ class PolygonController implements PolygonOptionsSink {
         polygon.setVisible(visible);
     }
 
-    @Override
-    public void setLineJoinType(AMapPara.LineJoinType joinType) {
-        //不支持动态修改
-    }
 }

@@ -10,13 +10,11 @@ import com.amap.api.maps.model.LatLng;
  * @since
  */
 public interface MarkerOptionsSink {
-    void setAlpha(float alpha);
 
     void setAnchor(float u, float v);
 
     void setDraggable(boolean draggable);
 
-    void setFlat(boolean flat);
 
     void setIcon(BitmapDescriptor bitmapDescriptor);
 

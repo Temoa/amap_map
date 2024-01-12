@@ -1,4 +1,4 @@
-import 'package:amap_map/src/core/method_channel_amap_map.dart';
+import 'package:amap_map_lite/src/core/method_channel_amap_map.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';

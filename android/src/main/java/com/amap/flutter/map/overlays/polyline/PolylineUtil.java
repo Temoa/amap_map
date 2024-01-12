@@ -79,15 +79,6 @@ class PolylineUtil {
         }
 
 
-        final Object customTexture = data.get("customTexture");
-        if (customTexture != null) {
-            sink.setCustomTexture(ConvertUtil.toBitmapDescriptor(customTexture));
-        }
-
-        final Object customTextureList = data.get("customTextureList");
-        if (customTextureList != null) {
-            sink.setCustomTextureList(ConvertUtil.toBitmapDescriptorList(customTextureList));
-        }
 
         final Object color = data.get("color");
         if (color != null) {

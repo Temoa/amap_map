@@ -17,8 +17,6 @@ class PolygonOptionsBuilder implements PolygonOptionsSink {
 
     PolygonOptionsBuilder() {
         polygonOptions = new PolygonOptions();
-        //必须设置为true，否则会出现线条转折处出现断裂的现象
-        polygonOptions.usePolylineStroke(true);
     }
 
     public PolygonOptions build() {
@@ -51,8 +49,4 @@ class PolygonOptionsBuilder implements PolygonOptionsSink {
         polygonOptions.visible(visible);
     }
 
-    @Override
-    public void setLineJoinType(AMapPara.LineJoinType joinType) {
-        polygonOptions.lineJoinType(joinType);
-    }
 }

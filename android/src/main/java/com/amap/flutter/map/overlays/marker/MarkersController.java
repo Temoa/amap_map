@@ -8,7 +8,6 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
-import com.amap.api.maps.model.Poi;
 import com.amap.flutter.map.MyMethodCallHandler;
 import com.amap.flutter.map.overlays.AbstractOverlayController;
 import com.amap.flutter.map.utils.Const;
@@ -33,17 +32,15 @@ public class MarkersController
         implements MyMethodCallHandler,
         AMap.OnMapClickListener,
         AMap.OnMarkerClickListener,
-        AMap.OnMarkerDragListener,
-        AMap.OnPOIClickListener {
+        AMap.OnMarkerDragListener {
     private static final String CLASS_NAME = "MarkersController";
     private String selectedMarkerDartId;
 
     public MarkersController(MethodChannel methodChannel, AMap amap) {
         super(methodChannel, amap);
-        amap.addOnMarkerClickListener(this);
-        amap.addOnMarkerDragListener(this);
-        amap.addOnMapClickListener(this);
-        amap.addOnPOIClickListener(this);
+        amap.setOnMarkerClickListener(this);
+        amap.setOnMarkerDragListener(this);
+        amap.setOnMapClickListener(this);
     }
 
     @Override
@@ -216,10 +213,10 @@ public class MarkersController
 
         LogUtil.i(CLASS_NAME, "onMarkerDragEnd==>" + data);
     }
-
-    @Override
-    public void onPOIClick(Poi poi) {
-        hideMarkerInfoWindow(selectedMarkerDartId, null != poi ? poi.getCoordinate() : null);
-    }
+//
+//    @Override
+//    public void onPOIClick(Poi poi) {
+//        hideMarkerInfoWindow(selectedMarkerDartId, null != poi ? poi.getCoordinate() : null);
+//    }
 
 }

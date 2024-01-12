@@ -39,25 +39,12 @@ class PolylineOptionsBuilder implements PolylineOptionsSink {
         polylineOptions.visible(visible);
     }
 
-    @Override
-    public void setCustomTexture(BitmapDescriptor customTexture) {
-        polylineOptions.setCustomTexture(customTexture);
-    }
-
-    @Override
-    public void setCustomTextureList(List<BitmapDescriptor> customTextureList) {
-        polylineOptions.setCustomTextureList(customTextureList);
-    }
 
     @Override
     public void setColorList(List<Integer> colorList) {
         polylineOptions.colorValues(colorList);
     }
 
-    @Override
-    public void setCustomIndexList(List<Integer> customIndexList) {
-        polylineOptions.setCustomTextureIndex(customIndexList);
-    }
 
     @Override
     public void setGeodesic(boolean geodesic) {
@@ -66,7 +53,7 @@ class PolylineOptionsBuilder implements PolylineOptionsSink {
 
     @Override
     public void setGradient(boolean gradient) {
-        polylineOptions.useGradient(gradient);
+        //
     }
 
     @Override

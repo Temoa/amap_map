@@ -1,4 +1,4 @@
-import 'package:amap_map/amap_map.dart';
+import 'package:amap_map_lite/amap_map.dart';
 import 'package:amap_map_example/animated_category_item.dart';
 import 'package:amap_map_example/category_list_item.dart';
 import 'package:amap_map_example/const_config.dart';

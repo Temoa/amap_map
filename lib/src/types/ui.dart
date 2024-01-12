@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 import 'dart:ui' show Color;
 import 'package:x_amap_base/x_amap_base.dart';
-import 'package:amap_map/amap_map.dart';
+import 'package:amap_map_lite/amap_map.dart';
 
 /// 地图类型
 enum MapType {

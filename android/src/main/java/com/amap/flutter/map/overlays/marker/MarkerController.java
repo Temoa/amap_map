@@ -41,10 +41,6 @@ class MarkerController implements MarkerOptionsSink {
         marker.setPosition(position);
     }
 
-    @Override
-    public void setAlpha(float alpha) {
-        marker.setAlpha(alpha);
-    }
 
     @Override
     public void setAnchor(float u, float v) {
@@ -54,11 +50,6 @@ class MarkerController implements MarkerOptionsSink {
     @Override
     public void setDraggable(boolean draggable) {
         marker.setDraggable(draggable);
-    }
-
-    @Override
-    public void setFlat(boolean flat) {
-        marker.setFlat(flat);
     }
 
     @Override

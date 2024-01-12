@@ -18,42 +18,34 @@ public interface AMapOptionsSink {
 
     void setMapType(int mapType);
 
-    public void setCustomMapStyleOptions(CustomMapStyleOptions customMapStyleOptions);
+     void setMyLocationStyle(MyLocationStyle myLocationStyle);
 
-    public void setMyLocationStyle(MyLocationStyle myLocationStyle);
+     void setMinZoomLevel(float minZoomLevel);
 
-    public void setScreenAnchor(float x, float y);
+     void setMaxZoomLevel(float maxZoomLevel);
 
-    public void setMinZoomLevel(float minZoomLevel);
+     void setLatLngBounds(LatLngBounds latLngBounds);
 
-    public void setMaxZoomLevel(float maxZoomLevel);
-
-    public void setLatLngBounds(LatLngBounds latLngBounds);
-
-    public void setTrafficEnabled(boolean trafficEnabled);
-
-    public void setTouchPoiEnabled(boolean touchPoiEnabled);
-
-    public void setBuildingsEnabled(boolean buildingsEnabled);
-
-    public void setLabelsEnabled(boolean labelsEnabled);
-
-    public void setCompassEnabled(boolean compassEnabled);
-
-    public void setScaleEnabled(boolean scaleEnabled);
+     void setTrafficEnabled(boolean trafficEnabled);
 
 
-    public void setZoomGesturesEnabled(boolean zoomGesturesEnabled);
+     void setBuildingsEnabled(boolean buildingsEnabled);
 
-    public void setScrollGesturesEnabled(boolean scrollGesturesEnabled);
+     void setLabelsEnabled(boolean labelsEnabled);
 
-    public void setRotateGesturesEnabled(boolean rotateGesturesEnabled);
 
-    public void setTiltGesturesEnabled(boolean tiltGesturesEnabled);
 
-    public void setInitialMarkers(Object initialMarkers);
+     void setZoomGesturesEnabled(boolean zoomGesturesEnabled);
 
-    public void setInitialPolylines(Object initialPolylines);
+     void setScrollGesturesEnabled(boolean scrollGesturesEnabled);
 
-    public void setInitialPolygons(Object initialPolygons);
+     void setRotateGesturesEnabled(boolean rotateGesturesEnabled);
+
+     void setTiltGesturesEnabled(boolean tiltGesturesEnabled);
+
+     void setInitialMarkers(Object initialMarkers);
+
+     void setInitialPolylines(Object initialPolylines);
+
+     void setInitialPolygons(Object initialPolygons);
 }

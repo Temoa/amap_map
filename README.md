@@ -29,7 +29,7 @@ flutter pub add amap_map
 在runApp启动的**第一个**Widget中，使用`context`进行组件初始化
 
 ```dart
-import 'package:amap_map/amap_map.dart';
+import 'package:amap_map_lite/amap_map.dart';
 import 'package:x_amap_base/x_amap_base.dart'; // AMapApiKey 和 AMapPrivacyStatement 定义在 package `x_amap_base` 中，需要一并引入
 
 class DemoWidget extends State<AMapDemo> {
@@ -56,7 +56,7 @@ AMapInitializer.updatePrivacyAgree(ConstConfig.amapPrivacyStatement);
 import 'package:amap_map_example/base_page.dart';
 import 'package:flutter/material.dart';
 
-import 'package:amap_map/amap_map.dart';
+import 'package:amap_map_lite/amap_map.dart';
 import 'package:x_amap_base/x_amap_base.dart';
 
 class ShowMapPage extends BasePage {

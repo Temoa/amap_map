@@ -22,7 +22,7 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 34
+    compileSdk 34
 
     defaultConfig {
         minSdkVersion 16
@@ -33,6 +33,6 @@ android {
 }
 
 dependencies {
-    implementation 'com.amap.api:3dmap:9.8.3'
+    implementation files('libs/Android_Lite3DMap_SDK_V1.3.1_20230815.jar')
 }
 

@@ -1,4 +1,4 @@
-package com.amap.flutter.amap_map_example;
+package com.amap.flutter.amap_flutter_map_example;
 
 import io.flutter.embedding.android.FlutterActivity;
 

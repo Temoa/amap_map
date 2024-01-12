@@ -6,6 +6,7 @@ import com.amap.api.maps.model.LatLng;
 import java.util.List;
 
 /**
+ * @author kuloud
  * @author whm
  * @date 2020/11/12 9:52 AM
  * @mail hongming.whm@alibaba-inc.com
@@ -27,6 +28,4 @@ interface PolygonOptionsSink {
     //是否显示
     void setVisible(boolean visible);
 
-    //边框连接类型
-    void setLineJoinType(AMapPara.LineJoinType joinType);
 }

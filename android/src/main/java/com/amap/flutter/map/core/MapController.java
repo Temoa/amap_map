@@ -7,21 +7,20 @@ import android.location.Location;
 import androidx.annotation.NonNull;
 
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.AMapWrapper;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
-import com.amap.api.maps.TextureMapView;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.CustomMapStyleOptions;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.MyLocationStyle;
-import com.amap.api.maps.model.Poi;
 import com.amap.flutter.map.MyMethodCallHandler;
 import com.amap.flutter.map.utils.Const;
 import com.amap.flutter.map.utils.ConvertUtil;
 import com.amap.flutter.map.utils.LogUtil;
+import com.amap.flutter.map.wrapper.MAWebViewWrapper;
 
-import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,31 +36,22 @@ import io.flutter.plugin.common.MethodChannel;
 public class MapController
         implements MyMethodCallHandler,
         AMapOptionsSink,
-        AMap.OnMapLoadedListener,
+        AMap.OnMapReadyListener,
         AMap.OnMyLocationChangeListener,
         AMap.OnCameraChangeListener,
         AMap.OnMapClickListener,
-        AMap.OnMapLongClickListener,
-        AMap.OnPOIClickListener {
+        AMap.OnMapLongClickListener {
     private static final String CLASS_NAME = "MapController";
     private final MethodChannel methodChannel;
-    private final AMap amap;
-    private final TextureMapView mapView;
+    private AMap amap;
+    private final AMapWrapper mapView;
     private MethodChannel.Result mapReadyResult;
     private boolean mapLoaded = false;
     private boolean myLocationShowing = false;
 
-    public MapController(MethodChannel methodChannel, TextureMapView mapView) {
+    public MapController(MethodChannel methodChannel, AMapWrapper mapView) {
         this.methodChannel = methodChannel;
         this.mapView = mapView;
-        amap = mapView.getMap();
-
-        amap.addOnMapLoadedListener(this);
-        amap.addOnMyLocationChangeListener(this);
-        amap.addOnCameraChangeListener(this);
-        amap.addOnMapLongClickListener(this);
-        amap.addOnMapClickListener(this);
-        amap.addOnPOIClickListener(this);
     }
 
     @Override
@@ -101,41 +91,24 @@ public class MapController
 
                 moveCamera(cameraUpdate, animatedObject, durationObject);
                 break;
-            case Const.METHOD_MAP_SET_RENDER_FPS:
-                amap.setRenderFps((Integer) call.argument("fps"));
-                result.success(null);
-                break;
-            case Const.METHOD_MAP_TAKE_SNAPSHOT:
-                final MethodChannel.Result _result = result;
-                amap.getMapScreenShot(new AMap.OnMapScreenShotListener() {
-                    @Override
-                    public void onMapScreenShot(Bitmap bitmap) {
-                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                        byte[] byteArray = stream.toByteArray();
-                        bitmap.recycle();
-                        _result.success(byteArray);
-                    }
 
-                    @Override
-                    public void onMapScreenShot(Bitmap bitmap, int i) {
-
-                    }
-                });
-                break;
             case Const.METHOD_MAP_CLEAR_DISK:
-                amap.removecache();
+                amap.clear();
                 result.success(null);
                 break;
             case Const.METHOD_MAP_TO_SCREEN_COORDINATE:
                 LatLng argLatLng = ConvertUtil.toLatLng(call.arguments);
-                Point resScreenLocation = amap.getProjection().toScreenLocation(argLatLng);
-                result.success(ConvertUtil.pointToJson(resScreenLocation));
+                amap.getProjection().toScreenLocation(argLatLng, (resScreenLocation) -> {
+                    result.success(ConvertUtil.pointToJson(resScreenLocation));
+                });
+
                 break;
             case Const.METHOD_MAP_FROM_SCREEN_COORDINATE:
                 Point argPoint = ConvertUtil.pointFromMap(call.arguments);
-                LatLng resLatLng = amap.getProjection().fromScreenLocation(argPoint);
-                result.success(ConvertUtil.latLngToList(resLatLng));
+                amap.getProjection().fromScreenLocation(argPoint, (resLatLng) -> {
+                    result.success(ConvertUtil.latLngToList(resLatLng));
+                });
+
                 break;
             default:
                 LogUtil.w(CLASS_NAME, "onMethodCall not find methodId:" + call.method);
@@ -145,10 +118,17 @@ public class MapController
     }
 
     @Override
-    public void onMapLoaded() {
+    public void onMapReady(AMap aMap) {
         LogUtil.i(CLASS_NAME, "onMapLoaded==>");
         try {
             mapLoaded = true;
+            amap = aMap;
+
+            amap.setOnMapClickListener(this);
+            amap.setOnMyLocationChangeListener(this);
+            amap.setOnCameraChangeListener(this);
+            amap.setOnMapLongClickListener(this);
+            amap.setOnMapClickListener(this);
             if (null != mapReadyResult) {
                 mapReadyResult.success(null);
                 mapReadyResult = null;
@@ -168,12 +148,6 @@ public class MapController
         amap.setMapType(mapType);
     }
 
-    @Override
-    public void setCustomMapStyleOptions(CustomMapStyleOptions customMapStyleOptions) {
-        if (null != amap) {
-            amap.setCustomMapStyle(customMapStyleOptions);
-        }
-    }
 
     @Override
     public void setMyLocationStyle(MyLocationStyle myLocationStyle) {
@@ -182,11 +156,6 @@ public class MapController
             amap.setMyLocationEnabled(myLocationShowing);
             amap.setMyLocationStyle(myLocationStyle);
         }
-    }
-
-    @Override
-    public void setScreenAnchor(float x, float y) {
-        amap.setPointToCenter(Float.valueOf(mapView.getWidth() * x).intValue(), Float.valueOf(mapView.getHeight() * y).intValue());
     }
 
     @Override
@@ -210,11 +179,6 @@ public class MapController
     }
 
     @Override
-    public void setTouchPoiEnabled(boolean touchPoiEnabled) {
-        amap.setTouchPoiEnable(touchPoiEnabled);
-    }
-
-    @Override
     public void setBuildingsEnabled(boolean buildingsEnabled) {
         amap.showBuildings(buildingsEnabled);
     }
@@ -222,16 +186,6 @@ public class MapController
     @Override
     public void setLabelsEnabled(boolean labelsEnabled) {
         amap.showMapText(labelsEnabled);
-    }
-
-    @Override
-    public void setCompassEnabled(boolean compassEnabled) {
-        amap.getUiSettings().setCompassEnabled(compassEnabled);
-    }
-
-    @Override
-    public void setScaleEnabled(boolean scaleEnabled) {
-        amap.getUiSettings().setScaleControlsEnabled(scaleEnabled);
     }
 
     @Override
@@ -312,15 +266,15 @@ public class MapController
         }
     }
 
-    @Override
-    public void onPOIClick(Poi poi) {
-        if (null != methodChannel) {
-            final Map<String, Object> arguments = new HashMap<String, Object>(2);
-            arguments.put("poi", ConvertUtil.poiToMap(poi));
-            methodChannel.invokeMethod("map#onPoiTouched", arguments);
-            LogUtil.i(CLASS_NAME, "onPOIClick===>" + arguments);
-        }
-    }
+//    @Override
+//    public void onPOIClick(Poi poi) {
+//        if (null != methodChannel) {
+//            final Map<String, Object> arguments = new HashMap<String, Object>(2);
+//            arguments.put("poi", ConvertUtil.poiToMap(poi));
+//            methodChannel.invokeMethod("map#onPoiTouched", arguments);
+//            LogUtil.i(CLASS_NAME, "onPOIClick===>" + arguments);
+//        }
+//    }
 
     private void moveCamera(CameraUpdate cameraUpdate, Object animatedObject, Object durationObject) {
         boolean animated = false;
@@ -333,7 +287,7 @@ public class MapController
         }
         if (null != amap) {
             if (animated) {
-                amap.animateCamera(cameraUpdate, duration, null);
+                amap.animateCamera(cameraUpdate);
             } else {
                 amap.moveCamera(cameraUpdate);
             }

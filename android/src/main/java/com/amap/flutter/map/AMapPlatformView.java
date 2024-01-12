@@ -9,17 +9,18 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapOptions;
-import com.amap.api.maps.TextureMapView;
+import com.amap.api.maps.AMapWrapper;
 import com.amap.flutter.map.core.MapController;
-import com.amap.flutter.map.core.MapsInitializerController;
 import com.amap.flutter.map.overlays.marker.MarkersController;
 import com.amap.flutter.map.overlays.polygon.PolygonsController;
 import com.amap.flutter.map.overlays.polyline.PolylinesController;
 import com.amap.flutter.map.utils.LogUtil;
+import com.amap.flutter.map.wrapper.MAWebViewWrapper;
+import com.amap.flutter.map.wrapper.MyWebView;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -31,6 +32,7 @@ import io.flutter.plugin.platform.PlatformView;
 
 
 /**
+ * @author kuloud
  * @author whm
  * @date 2020/10/27 5:49 PM
  * @mail hongming.whm@alibaba-inc.com
@@ -45,14 +47,17 @@ public class AMapPlatformView
     private static final String CLASS_NAME = "AMapPlatformView";
     private final MethodChannel methodChannel;
     private final Map<String, MyMethodCallHandler> myMethodCallHandlerMap;
-
-    private MapsInitializerController mapsInitializerController;
     private MapController mapController;
     private MarkersController markersController;
     private PolylinesController polylinesController;
     private PolygonsController polygonsController;
-    private TextureMapView mapView;
+    private AMapWrapper mapView;
+
+    private MAWebViewWrapper webViewWrapper;
+
     private boolean disposed = false;
+
+    private AMapOptionsBuilder aMapOptionsBuilder;
 
     AMapPlatformView(int id,
                      Context context,
@@ -60,20 +65,18 @@ public class AMapPlatformView
                      LifecycleOwner lifecycleProvider,
                      AMapOptions options) {
 
-        methodChannel = new MethodChannel(binaryMessenger, "amap_map_" + id);
+        methodChannel = new MethodChannel(binaryMessenger, "amap_map_lite_" + id);
         methodChannel.setMethodCallHandler(this);
         myMethodCallHandlerMap = new HashMap<>(8);
 
         try {
-            mapView = new TextureMapView(context, options);
-            AMap amap = mapView.getMap();
-            mapsInitializerController = new MapsInitializerController(methodChannel);
+            MyWebView myWebView = new MyWebView(context);
+            webViewWrapper = new MAWebViewWrapper(myWebView);
+            mapView = new AMapWrapper(context, webViewWrapper);
             mapController = new MapController(methodChannel, mapView);
-            markersController = new MarkersController(methodChannel, amap);
-            polylinesController = new PolylinesController(methodChannel, amap);
-            polygonsController = new PolygonsController(methodChannel, amap);
-            initMyMethodCallHandlerMap();
+            
             lifecycleProvider.getLifecycle().addObserver(this);
+
         } catch (Throwable e) {
             LogUtil.e(CLASS_NAME, "<init>", e);
         }
@@ -84,13 +87,6 @@ public class AMapPlatformView
         if (null != methodIdArray) {
             for (String methodId : methodIdArray) {
                 myMethodCallHandlerMap.put(methodId, mapController);
-            }
-        }
-
-        methodIdArray = mapsInitializerController.getRegisterMethodIdArray();
-        if (null != methodIdArray) {
-            for (String methodId : methodIdArray) {
-                myMethodCallHandlerMap.put(methodId, mapsInitializerController);
             }
         }
 
@@ -155,8 +151,50 @@ public class AMapPlatformView
                 return;
             }
             if (null != mapView) {
-                mapView.onCreate(null);
+                mapView.onCreate();
+                mapView.getMapAsyn((amap) -> {
+                    markersController = new MarkersController(methodChannel, amap);
+                    polylinesController = new PolylinesController(methodChannel, amap);
+                    polygonsController = new PolygonsController(methodChannel, amap);
+
+                    initMyMethodCallHandlerMap();
+
+                    getMapController().onMapReady(amap);
+
+                    if (null != aMapOptionsBuilder.myLocationStyle) {
+                        getMapController().setMyLocationStyle(aMapOptionsBuilder.myLocationStyle);
+                    }
+
+                    getMapController().setMinZoomLevel(aMapOptionsBuilder.minZoomLevel);
+                    getMapController().setMaxZoomLevel(aMapOptionsBuilder.maxZoomLevel);
+
+                    if (null != aMapOptionsBuilder.latLngBounds) {
+                        getMapController().setLatLngBounds(aMapOptionsBuilder.latLngBounds);
+                    }
+
+                    getMapController().setTrafficEnabled(aMapOptionsBuilder.trafficEnabled);
+                    getMapController().setBuildingsEnabled(aMapOptionsBuilder.buildingsEnabled);
+                    getMapController().setLabelsEnabled(aMapOptionsBuilder.labelsEnabled);
+
+
+                    if (null != aMapOptionsBuilder.initialMarkers) {
+                        List<Object> markerList = (List<Object>) aMapOptionsBuilder.initialMarkers;
+                        getMarkersController().addByList(markerList);
+                    }
+
+                    if (null != aMapOptionsBuilder.initialPolylines) {
+                        List<Object> markerList = (List<Object>) aMapOptionsBuilder.initialPolylines;
+                        getPolylinesController().addByList(markerList);
+                    }
+
+                    if (null != aMapOptionsBuilder.initialPolygons) {
+                        List<Object> polygonList = (List<Object>) aMapOptionsBuilder.initialPolygons;
+                        getPolygonsController().addByList(polygonList);
+                    }
+
+                });
             }
+
         } catch (Throwable e) {
             LogUtil.e(CLASS_NAME, "onCreate", e);
         }
@@ -233,7 +271,6 @@ public class AMapPlatformView
             if (disposed) {
                 return;
             }
-            mapView.onCreate(bundle);
         } catch (Throwable e) {
             LogUtil.e(CLASS_NAME, "onRestoreInstanceState", e);
         }
@@ -243,7 +280,7 @@ public class AMapPlatformView
     @Override
     public View getView() {
         LogUtil.i(CLASS_NAME, "getView==>");
-        return mapView;
+        return webViewWrapper.getView();
     }
 
     @Override
@@ -269,4 +306,7 @@ public class AMapPlatformView
     }
 
 
+    public void bind(AMapOptionsBuilder aMapOptionsBuilder) {
+        this.aMapOptionsBuilder = aMapOptionsBuilder;
+    }
 }

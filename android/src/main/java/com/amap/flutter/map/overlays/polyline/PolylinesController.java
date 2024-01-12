@@ -35,7 +35,7 @@ public class PolylinesController
 
     public PolylinesController(MethodChannel methodChannel, AMap amap) {
         super(methodChannel, amap);
-        amap.addOnPolylineClickListener(this);
+        amap.setOnPolylineClickListener(this);
     }
 
     @Override

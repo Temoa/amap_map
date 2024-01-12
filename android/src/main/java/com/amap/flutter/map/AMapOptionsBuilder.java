@@ -25,78 +25,29 @@ import io.flutter.plugin.common.BinaryMessenger;
 class AMapOptionsBuilder implements AMapOptionsSink {
     private static final String CLASS_NAME = "AMapOptionsBuilder";
     private final AMapOptions options = new AMapOptions();
-    private CustomMapStyleOptions customMapStyleOptions;
-    private MyLocationStyle myLocationStyle;
+    protected MyLocationStyle myLocationStyle;
 
-    private float minZoomLevel = 3;
-    private float maxZoomLevel = 20;
-    private LatLngBounds latLngBounds;
-    private boolean trafficEnabled = true;
-    private boolean touchPoiEnabled = true;
-    private boolean buildingsEnabled = true;
-    private boolean labelsEnabled = true;
+    protected float minZoomLevel = 3;
+    protected float maxZoomLevel = 20;
+    protected LatLngBounds latLngBounds;
+    protected boolean trafficEnabled = true;
+    protected boolean buildingsEnabled = true;
+    protected boolean labelsEnabled = true;
 
-    private float anchorX = 2.0F;
-    private float anchorY = 2.0F;
+    protected Object initialMarkers;
 
-    private Object initialMarkers;
+    protected Object initialPolylines;
 
-    private Object initialPolylines;
-
-    private Object initialPolygons;
+    protected Object initialPolygons;
 
     AMapPlatformView build(int id,
                            Context context,
                            BinaryMessenger binaryMessenger,
                            LifecycleOwner lifecycleProvider) {
         try {
-            //iOS端没有放大缩小UI, Android端强制隐藏
-            options.zoomControlsEnabled(false);
             final AMapPlatformView aMapPlatformView = new AMapPlatformView(id, context, binaryMessenger, lifecycleProvider, options);
+            aMapPlatformView.bind(this);
 
-
-            if (null != customMapStyleOptions) {
-                aMapPlatformView.getMapController().setCustomMapStyleOptions(customMapStyleOptions);
-            }
-
-            if (null != myLocationStyle) {
-                aMapPlatformView.getMapController().setMyLocationStyle(myLocationStyle);
-            }
-            if (anchorX >= 0
-                    && anchorX <= 1.0
-                    && anchorY <= 1.0
-                    && anchorY >= 0) {
-
-                aMapPlatformView.getMapController().setScreenAnchor(anchorX, anchorY);
-            }
-
-            aMapPlatformView.getMapController().setMinZoomLevel(minZoomLevel);
-            aMapPlatformView.getMapController().setMaxZoomLevel(maxZoomLevel);
-
-            if (null != latLngBounds) {
-                aMapPlatformView.getMapController().setLatLngBounds(latLngBounds);
-            }
-
-            aMapPlatformView.getMapController().setTrafficEnabled(trafficEnabled);
-            aMapPlatformView.getMapController().setTouchPoiEnabled(touchPoiEnabled);
-            aMapPlatformView.getMapController().setBuildingsEnabled(buildingsEnabled);
-            aMapPlatformView.getMapController().setLabelsEnabled(labelsEnabled);
-
-
-            if (null != initialMarkers) {
-                List<Object> markerList = (List<Object>) initialMarkers;
-                aMapPlatformView.getMarkersController().addByList(markerList);
-            }
-
-            if (null != initialPolylines) {
-                List<Object> markerList = (List<Object>) initialPolylines;
-                aMapPlatformView.getPolylinesController().addByList(markerList);
-            }
-
-            if (null != initialPolygons) {
-                List<Object> polygonList = (List<Object>) initialPolygons;
-                aMapPlatformView.getPolygonsController().addByList(polygonList);
-            }
             return aMapPlatformView;
         } catch (Throwable e) {
             LogUtil.e(CLASS_NAME, "build", e);
@@ -114,21 +65,12 @@ class AMapOptionsBuilder implements AMapOptionsSink {
         options.mapType(mapType);
     }
 
-    @Override
-    public void setCustomMapStyleOptions(CustomMapStyleOptions customMapStyleOptions) {
-        this.customMapStyleOptions = customMapStyleOptions;
-    }
 
     @Override
     public void setMyLocationStyle(MyLocationStyle myLocationStyle) {
         this.myLocationStyle = myLocationStyle;
     }
 
-    @Override
-    public void setScreenAnchor(float x, float y) {
-        anchorX = x;
-        anchorY = y;
-    }
 
     @Override
     public void setMinZoomLevel(float minZoomLevel) {
@@ -151,11 +93,6 @@ class AMapOptionsBuilder implements AMapOptionsSink {
     }
 
     @Override
-    public void setTouchPoiEnabled(boolean touchPoiEnabled) {
-        this.touchPoiEnabled = touchPoiEnabled;
-    }
-
-    @Override
     public void setBuildingsEnabled(boolean buildingsEnabled) {
         this.buildingsEnabled = buildingsEnabled;
     }
@@ -165,10 +102,6 @@ class AMapOptionsBuilder implements AMapOptionsSink {
         this.labelsEnabled = labelsEnabled;
     }
 
-    @Override
-    public void setCompassEnabled(boolean compassEnabled) {
-        options.compassEnabled(compassEnabled);
-    }
 
     @Override
     public void setZoomGesturesEnabled(boolean zoomGesturesEnabled) {
@@ -190,10 +123,6 @@ class AMapOptionsBuilder implements AMapOptionsSink {
         options.tiltGesturesEnabled(tiltGesturesEnabled);
     }
 
-    @Override
-    public void setScaleEnabled(boolean scaleEnabled) {
-        options.scaleControlsEnabled(scaleEnabled);
-    }
 
 
     @Override

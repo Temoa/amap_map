@@ -25,7 +25,7 @@ apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
 
     lintOptions {
         disable 'InvalidPackage'
@@ -33,7 +33,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.amap.flutter.amap_map_example"
+        applicationId "com.amap.flutter.amap_flutter_map_example"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
@@ -72,7 +72,7 @@ android {
 }
 dependencies {
     //demo中引入高德地图SDK
-    implementation 'com.amap.api:3dmap:9.8.3'
+    // implementation 'com.amap.api:3dmap:9.8.3'
 }
 
 flutter {

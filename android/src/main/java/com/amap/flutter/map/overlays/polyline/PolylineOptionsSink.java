@@ -25,17 +25,9 @@ public interface PolylineOptionsSink {
     //是否显示
     void setVisible(boolean visible);
 
-    //纹理
-    void setCustomTexture(BitmapDescriptor customTexture);
-
-    //纹理列表
-    void setCustomTextureList(List<BitmapDescriptor> customTextureList);
-
     //颜色列表
     void setColorList(List<Integer> colorList);
 
-    //纹理顺序
-    void setCustomIndexList(List<Integer> customIndexList);
 
     //是否大地曲线
     void setGeodesic(boolean geodesic);

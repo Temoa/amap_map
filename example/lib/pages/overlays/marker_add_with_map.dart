@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:amap_map/amap_map.dart';
+import 'package:amap_map_lite/amap_map.dart';
 import 'package:x_amap_base/x_amap_base.dart';
 import 'package:flutter/material.dart';
 

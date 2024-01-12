@@ -15,7 +15,7 @@ dependencies:
   permission_handler: ^11.1.0
   flutter_plugin_android_lifecycle: ^2.0.17
 
-  amap_map:
+  amap_map_lite:
     # When depending on this package from a real application you should use:
     #   amap_map: ^x.y.z
     # See https://dart.dev/tools/pub/dependencies#version-constraints
