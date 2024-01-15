@@ -1,21 +1,19 @@
 # amap_map
-[![pub package](https://img.shields.io/pub/v/amap_map.svg)](https://pub.dev/packages/amap_map)
+[![pub package](https://img.shields.io/pub/v/amap_map_lite.svg)](https://pub.dev/packages/amap_map_lite)
 
 基于[高德开放平台地图SDK](https://lbs.amap.com/api/)的flutter插件
 
 |             | Android | iOS   |
 |-------------|---------|-------|
-| **AMapSDK** | 9.8.3 | 9.7.0 | 
+| **AMapSDK** | 1.3.1(in processing) | planned | 
 | **Support** | SDK 16+ | 12.0+ | 
 
-本插件基于 amap_flutter_map 3.0.0 进行二开的原因：
-1. 原插件21年开始已无更新，插件年久失修，依赖SDK版本老旧
-1. 原插件只实现了基础的地图展示和交互功能，无法满足常见定制化需求
+本插件在 amap_map 基础上， 基于AMap轻量版SDK定制开发，与 AMap3DSdk (main分支)在同一个repo，独立维护在lite分支，lite版插件将使用 2.x.y 命名版本
 
 ## Usage
 使用Flutter插件，请参考[在Flutter里使用Packages](https://flutter.cn/docs/development/packages-and-plugins/using-packages), 添加`amap_map`的引用
 ```bash
-flutter pub add amap_map
+flutter pub add amap_map_lite
 ```
 
 ## Prepare
