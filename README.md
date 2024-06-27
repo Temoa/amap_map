@@ -197,6 +197,9 @@ class AMapWidget extends StatefulWidget {
 
   ///拓展插件，提供更多定制化功能
   final List<AMapExtension> extensions;
+
+  /// 地图上显示的 circle
+  final Set<Circle> circles;
 }
 ```
 

@@ -12,6 +12,7 @@
 
 import 'dart:async';
 
+import 'package:amap_map/src/types/circle_updates.dart';
 import 'package:x_amap_base/x_amap_base.dart';
 import 'package:amap_map/src/core/amap_flutter_platform.dart';
 import 'package:amap_map/src/types/types.dart';
@@ -87,6 +88,17 @@ class MethodChannelAMapFlutterMap implements AMapFlutterPlatform {
     return channel(mapId).invokeMethod<void>(
       'polygons#update',
       polygonUpdates.toMap(),
+    );
+  }
+
+  /// 更新Circle的数据
+  Future<void> updateCircles(
+      CircleUpdates circleUpdates, {
+        required int mapId,
+      }) {
+    return channel(mapId).invokeMethod<void>(
+      'circles#update',
+      circleUpdates.toMap(),
     );
   }
 

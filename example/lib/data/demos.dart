@@ -8,6 +8,7 @@ import 'package:amap_map_example/pages/map/map_with_extension_page.dart';
 import 'package:amap_map_example/pages/map/show_map_page.dart';
 import 'package:amap_map_example/pages/overlays/custom_info_window.dart';
 import 'package:amap_map_example/pages/overlays/marker_config.dart';
+import 'package:amap_map_example/pages/overlays/place_circle.dart';
 import 'package:flutter/material.dart';
 
 class DemoConfiguration {
@@ -80,7 +81,15 @@ List<Demo> overlayDemos() {
         slug: 'custom-info-window',
         configurations: [
           DemoConfiguration(buildRoute: (context) => CustomInfoWindowDemoPage())
-        ])
+        ]),
+    Demo(
+        title: '绘制圆',
+        category: DemoCategory.overlay,
+        subtitle: '演示Circle的相关属性的操作',
+        slug: 'circle-config',
+        configurations: [
+          DemoConfiguration(buildRoute: (context) => CircleDemoPage())
+        ]),
   ];
 }
 

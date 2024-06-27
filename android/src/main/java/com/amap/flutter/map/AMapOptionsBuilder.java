@@ -45,6 +45,8 @@ class AMapOptionsBuilder implements AMapOptionsSink {
 
     private Object initialPolygons;
 
+    private Object initialCircles;
+
     AMapPlatformView build(int id,
                            Context context,
                            BinaryMessenger binaryMessenger,
@@ -96,6 +98,11 @@ class AMapOptionsBuilder implements AMapOptionsSink {
             if (null != initialPolygons) {
                 List<Object> polygonList = (List<Object>) initialPolygons;
                 aMapPlatformView.getPolygonsController().addByList(polygonList);
+            }
+
+            if(null != initialCircles) {
+                List<Object> polygonList = (List<Object>) initialCircles;
+                aMapPlatformView.getCirclesController().addByList(polygonList);
             }
             return aMapPlatformView;
         } catch (Throwable e) {
@@ -209,6 +216,11 @@ class AMapOptionsBuilder implements AMapOptionsSink {
     @Override
     public void setInitialPolygons(Object polygonsObject) {
         this.initialPolygons = polygonsObject;
+    }
+
+    @Override
+    public void setInitialCircles(Object initialCircles) {
+        this.initialCircles = initialCircles;
     }
 
 

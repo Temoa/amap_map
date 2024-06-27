@@ -99,6 +99,9 @@ class AMapWidget extends StatefulWidget {
 
   final List<AMapExtension> extensions;
 
+  /// 地图上显示的circle
+  final Set<Circle> circles;
+
   /// 创建一个展示高德地图的widget
   ///
   /// 在app首次启动时必须传入高德合规声明配置[privacyStatement],后续如果没有变化不需要重复设置
@@ -140,7 +143,8 @@ class AMapWidget extends StatefulWidget {
       this.markers = const <Marker>{},
       this.polylines = const <Polyline>{},
       this.polygons = const <Polygon>{},
-      this.extensions = const []})
+      this.extensions = const [],
+      this.circles = const <Circle>{}})
       : super(key: key);
 
   ///
@@ -152,6 +156,7 @@ class _MapState extends State<AMapWidget> {
   Map<String, Marker> _markers = <String, Marker>{};
   Map<String, Polyline> _polylines = <String, Polyline>{};
   Map<String, Polygon> _polygons = <String, Polygon>{};
+  Map<String, Circle> _circles = <String, Circle>{};
   Map<String, AMapExtension> _extensions = <String, AMapExtension>{};
 
   final Completer<AMapController> _controller = Completer<AMapController>();
@@ -167,6 +172,7 @@ class _MapState extends State<AMapWidget> {
       'markersToAdd': serializeOverlaySet(widget.markers),
       'polylinesToAdd': serializeOverlaySet(widget.polylines),
       'polygonsToAdd': serializeOverlaySet(widget.polygons),
+      'circlesToAdd': serializeOverlaySet(widget.circles),
     };
     Widget mapView = _methodChannel.buildView(
       creationParams,
@@ -187,6 +193,7 @@ class _MapState extends State<AMapWidget> {
     _mapOptions = _AMapOptions.fromWidget(widget);
     _markers = keyByMarkerId(widget.markers);
     _polygons = keyByPolygonId(widget.polygons);
+    _circles = keyByCircleId(widget.circles);
     _polylines = keyByPolylineId(widget.polylines);
 
     _extensions = keyByExtensionId(widget.extensions);
@@ -221,6 +228,7 @@ class _MapState extends State<AMapWidget> {
     _updatePolylines();
     _updatePolygons();
     _updateExtensions();
+    _updateCircles();
   }
 
   Future<void> onPlatformViewCreated(int id) async {
@@ -312,6 +320,13 @@ class _MapState extends State<AMapWidget> {
   void _updateExtensions() async {
     // final AMapController controller = await _controller.future;
     _extensions = keyByExtensionId(widget.extensions);
+  }
+
+  void _updateCircles() async {
+    final AMapController controller = await _controller.future;
+    controller._updateCircles(
+        CircleUpdates.from(_circles.values.toSet(), widget.circles));
+    _circles = keyByCircleId(widget.circles);
   }
 }
 
