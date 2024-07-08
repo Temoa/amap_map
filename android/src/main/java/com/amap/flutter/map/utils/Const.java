@@ -61,4 +61,12 @@ public class Const {
      */
     public static final String METHOD_CIRCLE_UPDATE = "circles#update";
     public static final String[] METHOD_ID_LIST_FOR_CIRCLE = {METHOD_CIRCLE_UPDATE};
+
+    /**
+     * moving
+     */
+    public static final String METHOD_MOVING_START = "moving#start";
+    public static final String METHOD_MOVING_STOP = "moving#stop";
+    public static final String METHOD_MOVING_DESTROY = "moving#destroy";
+    public static final String[] METHOD_ID_LIST_FOR_MOVING = {METHOD_MOVING_START, METHOD_MOVING_STOP, METHOD_MOVING_DESTROY};
 }

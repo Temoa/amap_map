@@ -9,6 +9,7 @@ import 'package:amap_map_example/pages/map/show_map_page.dart';
 import 'package:amap_map_example/pages/overlays/custom_info_window.dart';
 import 'package:amap_map_example/pages/overlays/marker_config.dart';
 import 'package:amap_map_example/pages/overlays/place_circle.dart';
+import 'package:amap_map_example/pages/overlays/place_moving.dart';
 import 'package:flutter/material.dart';
 
 class DemoConfiguration {
@@ -89,6 +90,14 @@ List<Demo> overlayDemos() {
         slug: 'circle-config',
         configurations: [
           DemoConfiguration(buildRoute: (context) => CircleDemoPage())
+        ]),
+    Demo(
+        title: '移动点',
+        category: DemoCategory.overlay,
+        subtitle: '',
+        slug: 'moving-config',
+        configurations: [
+          DemoConfiguration(buildRoute: (context) => MovingDemoPage())
         ]),
   ];
 }

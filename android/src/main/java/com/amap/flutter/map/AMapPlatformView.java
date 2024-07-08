@@ -16,6 +16,7 @@ import com.amap.flutter.map.core.MapController;
 import com.amap.flutter.map.core.MapsInitializerController;
 import com.amap.flutter.map.overlays.circle.CirclesController;
 import com.amap.flutter.map.overlays.marker.MarkersController;
+import com.amap.flutter.map.overlays.moving.MovingController;
 import com.amap.flutter.map.overlays.polygon.PolygonsController;
 import com.amap.flutter.map.overlays.polyline.PolylinesController;
 import com.amap.flutter.map.utils.LogUtil;
@@ -53,6 +54,7 @@ public class AMapPlatformView
     private PolylinesController polylinesController;
     private PolygonsController polygonsController;
     private CirclesController circlesController;
+    private MovingController movingController;
     private TextureMapView mapView;
     private boolean disposed = false;
 
@@ -75,6 +77,7 @@ public class AMapPlatformView
             polylinesController = new PolylinesController(methodChannel, amap);
             polygonsController = new PolygonsController(methodChannel, amap);
             circlesController = new CirclesController(methodChannel, amap);
+            movingController = new MovingController(methodChannel, amap);
             initMyMethodCallHandlerMap();
             lifecycleProvider.getLifecycle().addObserver(this);
         } catch (Throwable e) {
@@ -122,6 +125,13 @@ public class AMapPlatformView
         if (null != methodIdArray) {
             for (String methodId : methodIdArray) {
                 myMethodCallHandlerMap.put(methodId, circlesController);
+            }
+        }
+
+        methodIdArray = movingController.getRegisterMethodIdArray();
+        if (null != methodIdArray) {
+            for (String methodId : methodIdArray) {
+                myMethodCallHandlerMap.put(methodId, movingController);
             }
         }
     }

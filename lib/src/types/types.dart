@@ -25,5 +25,6 @@ export 'amap_extension.dart';
 export 'screen_coordinate.dart';
 export 'circle.dart';
 export 'circle_updates.dart';
+export 'moving.dart';
 
 export '../extension/extensions.dart';

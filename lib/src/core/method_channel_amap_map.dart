@@ -12,15 +12,15 @@
 
 import 'dart:async';
 
-import 'package:amap_map/src/types/circle_updates.dart';
-import 'package:x_amap_base/x_amap_base.dart';
 import 'package:amap_map/src/core/amap_flutter_platform.dart';
+import 'package:amap_map/src/types/moving.dart';
 import 'package:amap_map/src/types/types.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:stream_transform/stream_transform.dart';
+import 'package:x_amap_base/x_amap_base.dart';
 
 import 'map_event.dart';
 
@@ -295,5 +295,31 @@ class MethodChannelAMapFlutterMap implements AMapFlutterPlatform {
         .invokeMethod<List<dynamic>>(
             'map#fromScreenCoordinate', screenCoordinate.toJson());
     return LatLng(latLng![0] as double, latLng[1] as double);
+  }
+
+  Future<void> startSmoothMove(
+    Moving moving, {
+    required int mapId,
+  }) async {
+    return channel(mapId).invokeMethod<void>(
+      'moving#start',
+      moving.toMap(),
+    );
+  }
+
+  Future<void> stopSmoothMove({
+    required int mapId,
+  }) async {
+    return channel(mapId).invokeMethod<void>(
+      'moving#stop',
+    );
+  }
+
+  Future<void> destroySmoothMove({
+    required int mapId,
+  }) async {
+    return channel(mapId).invokeMethod<void>(
+      'moving#destroy',
+    );
   }
 }

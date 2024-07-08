@@ -154,4 +154,19 @@ class AMapController {
   Future<LatLng> fromScreenCoordinate(ScreenCoordinate screenCoordinate) {
     return _methodChannel.fromScreenLocation(screenCoordinate, mapId: mapId);
   }
+
+  /// 开始平滑移动
+  Future<void> startSmoothMove(Moving moving) {
+    return _methodChannel.startSmoothMove(moving, mapId: mapId);
+  }
+
+  /// 停止平滑移动
+  Future<void> stopSmoothMove() {
+    return _methodChannel.stopSmoothMove(mapId: mapId);
+  }
+
+  /// 销毁平滑移动
+  Future<void> destroySmoothMove() {
+    return _methodChannel.destroySmoothMove(mapId: mapId);
+  }
 }
