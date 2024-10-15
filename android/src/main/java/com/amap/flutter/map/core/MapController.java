@@ -137,6 +137,10 @@ public class MapController
                 LatLng resLatLng = amap.getProjection().fromScreenLocation(argPoint);
                 result.success(ConvertUtil.latLngToList(resLatLng));
                 break;
+            case Const.METHOD_MAP_GET_SCALE_PER_PIXEL:
+                float scalePerPixel = amap.getScalePerPixel();
+                result.success(scalePerPixel);
+                break;
             default:
                 LogUtil.w(CLASS_NAME, "onMethodCall not find methodId:" + call.method);
                 break;

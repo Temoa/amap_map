@@ -154,4 +154,9 @@ class AMapController {
   Future<LatLng> fromScreenCoordinate(ScreenCoordinate screenCoordinate) {
     return _methodChannel.fromScreenLocation(screenCoordinate, mapId: mapId);
   }
+
+  /// 获取当前缩放级别下，地图上1像素点对应的长度，单位米。
+  Future<double?> getScalePerPixel() {
+    return _methodChannel.getScalePerPixel(mapId: mapId);
+  }
 }

@@ -21,6 +21,7 @@ public class Const {
     public static final String METHOD_MAP_CLEAR_DISK = "map#clearDisk";
     public static final String METHOD_MAP_TO_SCREEN_COORDINATE = "map#toScreenCoordinate";
     public static final String METHOD_MAP_FROM_SCREEN_COORDINATE = "map#fromScreenCoordinate";
+    public static final String METHOD_MAP_GET_SCALE_PER_PIXEL = "map#getScalePerPixel";
 
     public static final String METHOD_SET_TERRAIN_ENABLE = "#setTerrainEnable";
 

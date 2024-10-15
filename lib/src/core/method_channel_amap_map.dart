@@ -296,4 +296,12 @@ class MethodChannelAMapFlutterMap implements AMapFlutterPlatform {
             'map#fromScreenCoordinate', screenCoordinate.toJson());
     return LatLng(latLng![0] as double, latLng[1] as double);
   }
+
+  Future<double?> getScalePerPixel({
+    required int mapId,
+  }) async {
+    final double? value = await channel(mapId)
+        .invokeMethod<double>('map#getScalePerPixel');
+    return value;
+  }
 }
