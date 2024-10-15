@@ -258,6 +258,10 @@
         CLLocationCoordinate2D coordinate = [weakSelf.mapView convertPoint:point toCoordinateFromView:weakSelf.mapView];
         result([AMapConvertUtil arrayFromLocation:coordinate]);
     }];
+    [self.channel addMethodName:@"map#getScalePerPixel" withHandler:^(FlutterMethodCall * _Nonnull call, FlutterResult  _Nonnull result) {
+        double scalePerPixel = [weakSelf.mapView metersPerPointForCurrentZoom];
+        result([NSNumber numberWithDouble:scalePerPixel]);
+    }];
 }
 
 //MARK: MAMapViewDelegate
