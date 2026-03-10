@@ -34,6 +34,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.amap.api:3dmap-location-search:10.0.700_loc6.4.5_sea9.7.2'
+//    implementation 'com.amap.api:3dmap-location-search:10.1.600_loc6.5.1_sea9.7.4'
+    compileOnly files('libs/AMap3DMap_11.1.063.aar')
 }
 
